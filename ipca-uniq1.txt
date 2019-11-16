@@ -1,0 +1,8 @@
+Isto é uma linha de exemplo.
+Isto é uma linha de exemplo.
+Isto é uma linha de exemplo.
+
+Isto é uma linha de exemplo, mas maior.
+Isto é uma linha de exemplo, mas maior.
+
+Este exemplo vai ser usado com o comando uniq.
