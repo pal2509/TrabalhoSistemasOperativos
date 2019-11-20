@@ -16,18 +16,20 @@ int main(int argc, char* argv[])
         fd = open (argv[i], O_RDONLY); //Abrir os ficherios passados com argumento
         if(fd >= 0) //Verificação se existiu algum erro na abertura do ficherio
         {
-            stat(argv[i], &file); //Estado do ficherio
-            printf("Nome: %s\n", argv[i]);
-            printf("Tipo de ficheiro: ");
-            switch (file.st_mode & __S_IFMT) {
-            case __S_IFBLK:  printf("Orientado ao bloco\n");      break;
-            case __S_IFCHR:  printf("Orientado ao caracter\n");   break;
-            case __S_IFIFO:  printf("FIFO/pipe\n");               break;
-            case __S_IFLNK:  printf("symlink\n");                 break;
-            case __S_IFREG:  printf("Normal\n");                  break;
-            case __S_IFSOCK: printf("Socket\n");                  break;
-            default:       printf("Desconhecido?\n");             break;
-           }
+            if(stat(argv[i], &file) == -1)perror("Erro"); //Estado do ficheiro
+            else {   
+                printf("Nome: %s\n", argv[i]);
+                printf("Tipo de ficheiro: ");
+                switch (file.st_mode & __S_IFMT) {
+                case __S_IFBLK:  printf("Orientado ao bloco\n");      break;
+                case __S_IFCHR:  printf("Orientado ao caracter\n");   break;
+                case __S_IFIFO:  printf("FIFO/pipe\n");               break;
+                case __S_IFLNK:  printf("symlink\n");                 break;
+                case __S_IFREG:  printf("Normal\n");                  break;
+                case __S_IFSOCK: printf("Socket\n");                  break;
+                default:       printf("Desconhecido?\n");             break;
+                }
+            }
             printf("Tamanho: %lld bytes\n",(long long)file.st_size);
             printf("I-node: %ld\n",(long)file.st_ino);
             printf("UID: %ld \n",(long)file.st_uid);
@@ -35,7 +37,7 @@ int main(int argc, char* argv[])
             printf("Última modificação: %s\n",ctime(&file.st_mtime));
 
         }
-        else write(2,"Erro ficherio não existe!!!\n", 30); //Mensagem de erro
+        else perror("Erro"); //Mensagem de erro
         close(fd); //Fechar o fiheiro
     }
     return 0;

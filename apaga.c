@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
         {
             write(1, "Ficherio apagado com sucesso.\n",31);
         }
-        else write(2,"Erro ao apagar ficherio!!!\n", 28); 
+        else perror("Erro"); 
     }
     return 0;
 }

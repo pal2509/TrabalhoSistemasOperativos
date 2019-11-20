@@ -19,24 +19,23 @@ int main(int argc, char* argv[])
             if(dir != NULL)
             {
                 struct dirent *read;
-                printf("Name\tTipo\n");
                 while((read = readdir(dir)) != NULL )
                 {                                        
-                    printf("%s\t", read->d_name);
                     switch(read->d_type)
                     {
-                        case DT_BLK: printf("B\n");     break;
-                        case DT_CHR: printf("C\n");     break;
-                        case DT_DIR: printf("D\n");     break;
-                        case DT_FIFO: printf("P\n");     break;
-                        case DT_LNK: printf("L\n");     break;
-                        case DT_REG: printf("N\n");    break;
-                        case DT_SOCK: printf("S\n");     break;
-                        default: printf("?\n");            break;
+                        case DT_BLK: printf("B ");     break;
+                        case DT_CHR: printf("C ");     break;
+                        case DT_DIR: printf("D ");     break;
+                        case DT_FIFO: printf("P ");     break;
+                        case DT_LNK: printf("L ");     break;
+                        case DT_REG: printf("N ");    break;
+                        case DT_SOCK: printf("S ");     break;
+                        default: printf("? ");            break;
                     }    
+                    printf("%s\n", read->d_name);
                 }
             }
-            else write(2,"Erro ao abrir directoria!!!",28);
+            else perror("Erro");
         closedir(dir);               
     }
     else
@@ -47,25 +46,24 @@ int main(int argc, char* argv[])
             if(dir != NULL)
             {
                 struct dirent *read;
-                printf("Name\tTipo\n");
+                
                 while((read = readdir(dir)) != NULL )
                 {                                        
-                    printf("%s\t", read->d_name);
                     switch(read->d_type)
                     {
-                        case DT_BLK: printf("B\n");     break;
-                        case DT_CHR: printf("C\n");     break;
-                        case DT_DIR: printf("D\n");     break;
-                        case DT_FIFO: printf("P\n");     break;
-                        case DT_LNK: printf("L\n");     break;
-                        case DT_REG: printf("N\n");    break;
-                        case DT_SOCK: printf("S\n");     break;
-                        default: printf("?\n");            break;
-                    }    
+                        case DT_BLK: printf("B ");     break;
+                        case DT_CHR: printf("C ");     break;
+                        case DT_DIR: printf("D ");     break;
+                        case DT_FIFO: printf("P ");     break;
+                        case DT_LNK: printf("L ");     break;
+                        case DT_REG: printf("N ");    break;
+                        case DT_SOCK: printf("S ");     break;
+                        default: printf("? ");            break;
+                    }
+                    printf("%s\n", read->d_name);
                 }
-                
             }
-            else write(2,"Erro directoria não existe!!!\n", 30); //Mensagem de erro
+            else perror("Erro"); //Mensagem de erro
             closedir(dir); //Fechar o fiheiro
         }
     }    
