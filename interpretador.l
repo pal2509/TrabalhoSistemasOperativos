@@ -1,76 +1,115 @@
+%{    
     #include "libcomandos.c"
 
     char cmd[20];
     char c = '%';
+    char arg1[500];
+    char arg2[500];
+    char *arg[20];
+    int i = 1;
+%}
 
-
+%x A
+%x B
+%x C
+%x D
+%x E
+%x F
 
 %%
 
 lista      {   
                 strcpy(cmd,yytext);
-                printf("cmd: %s\n", cmd);
-                
+                BEGIN(A);
             }
 
 mostra      {   
                 strcpy(cmd,yytext);
-                printf("cmd: %s\n", cmd);
+                BEGIN(A);
             }
 
 
 informa     {   
                 strcpy(cmd,yytext);
-                printf("cmd: %s\n", cmd);
-                
+                BEGIN(A);
             }
 
 apaga       {
                 strcpy(cmd,yytext);
-                printf("cmd: %s\n", cmd);
-                
+                BEGIN(A);
             }
 
 acrescenta  {   
                 strcpy(cmd,yytext);
                 printf("cmd: %s\n", cmd);
-                
+                BEGIN(C);
             }
 
-[^/]+\/|?+  {
-                printf("File:%s\n", yytext);
-                char path[strlen(cmd) + 2];
-                path[0] = '.';
-                path[1] = '/';
-                for(int i = 0; i < sizeof(cmd); i++)
-                {
-                        path[i + 2] = cmd[i];
-                }
-                printf("Path:%s\n",path);
-                char file[strlen(yytext)];
-                for(int i = 0 ; i < sizeof(file) ; i++)
-                {
-                    file[i] = yytext[i];
-                }
-                
+conta       {   
+                strcpy(cmd,yytext);
+                BEGIN(A);
+            }
+
+<A>[ ]      {BEGIN(B);}
+
+
+<B>[^ \n]+  {    
                 int p = fork();
                 if(p == 0)
                 {
-                    printf("antes exec\n");
-                    
-                    if(execl(path, cmd, file ,(char *)NULL) == -1)perror("Erro");
-                    printf("depois exec\n");
+                    if(execl(getpath(cmd), cmd, yytext, (char *) NULL) == -1)perror("Erro");
                 }
                 else
                 {
-                    printf("teste antes\n");
                     wait(NULL);
-                    printf("teste depois\n");
+                    BEGIN(INITIAL);
+
                 } 
             }
+<INITIAL,A>\n  {  printf("%c ", c); BEGIN(INITIAL);}
 
-\n  {   }
+terminar       { return 0;}
+
+<C>" "          {  puts("First space");BEGIN(D);}
+
+<E>[^\n]+    { 
+                printf("%sawwad\n",yytext);
+                //char a[strlen(yytext) - 1];
+                //for(int k = 0 ; k < sizeof(a); k++)a[k]=yytext[k];
+                arg[i] = yytext;
+                i++; 
+                BEGIN(F);
+            }
+
+<D>[^\n]+" "   {
+                printf("%sawwad\n",yytext);
+                char a[strlen(yytext) - 1];
+                for(int k = 0 ; k < sizeof(a); k++)a[k]=yytext[k];
+                arg[i] = a;
+                printf("arg:%s",arg[i]);
+                i++;
+                BEGIN(E);
+            }
 
 
+<F>\n       {
+                arg[0] = cmd;
+                printf("%s\n", arg[0]);
+                printf("%s\n", arg[1]);
+                printf("%s\n", arg[2]);
+                
+                arg[i] = NULL;
+                int p = fork();
+                if(p == 0)
+                {
+                    showargs(arg);
+                    if(execv(getpath(cmd), arg) == -1)perror("Erro");
+                }
+                else
+                {
+                   wait(NULL);
+                   BEGIN(INITIAL);
+                }  
+            }
 
 %%

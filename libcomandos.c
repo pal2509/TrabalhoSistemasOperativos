@@ -4,12 +4,28 @@
 #include <sys/wait.h>
 
 
-
-void lista(char path[200], char cmd[20], char file[200])
+//Transforma o comando dado para um path, sendo esse path a pasta atual (./)
+char *getpath(char cmd[])
 {
-    int p = fork();
-    if(p)
+    char *path = malloc(strlen(cmd) + 2);
+    //printf("Path Size: %ld\n",sizeof(path));
+    path[0] = '.';
+    path[1] = '/';
+    for(int i = 0; i < strlen(cmd) + 2 ; i++)
     {
-        if(execl(path, cmd, file ,(char *)NULL) == -1)perror("Erro");
+        path[i + 2] = cmd[i];
+    }
+    //printf("Path:%s::%ld\n",path,sizeof(path));
+    return path;
+}
+
+
+void showargs(char *args[])
+{
+    int i = 0;
+    while(args[i] != NULL)
+    {
+        printf("args:%d %s\n", i, args[i]);
+        i++;
     }
 }

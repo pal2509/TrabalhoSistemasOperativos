@@ -5,6 +5,19 @@
 
 int main()
 {   
-    lista("./lista", "lista            " , "FicheirosAuxiliares/");
+    int c = fork();
+    if(c == 0)
+    {
+        char *args[5];
+        char a[] = "teste.c";
+
+        args[0] = "mostra";
+        args[1] = a;
+
+        
+
+        execv("./mostra", args);
+        perror("Erro");
+    }
 	return 0;
 }
