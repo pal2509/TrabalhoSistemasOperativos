@@ -5,4 +5,59 @@ lwladwd5
 345
 987
 456
-acrescenta teste.txt teste.c
+acrescenta teste.txt teste.c#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "libcomandos.c"
+
+int main()
+{   
+    int c = fork();
+    if(c == 0)
+    {
+        char *args[5];
+        char a[] = "teste.c";
+
+        args[0] = "mostra";
+        args[1] = a;
+
+        
+
+        execv("./mostra", args);
+        perror("Erro");
+    }
+	return 0;
+}#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "libcomandos.c"
+
+int main()
+{   
+    int c = fork();
+    if(c == 0)
+    {
+        char *args[5];
+        char a[] = "teste.c";
+
+        args[0] = "mostra";
+        args[1] = a;
+
+        
+
+        execv("./mostra", args);
+        perror("Erro");
+    }
+	return 0;
+}5
+1
+6
+122
+345
+987
+456
+873
+9
+8
+3
+1111

@@ -70,46 +70,33 @@ conta       {
 
 terminar       { return 0;}
 
-<C>" "          {  puts("First space");BEGIN(D);}
+<C>[ ]          {  puts("First space");BEGIN(D);}
 
-<E>[^\n]+    { 
-                printf("%sawwad\n",yytext);
-                //char a[strlen(yytext) - 1];
-                //for(int k = 0 ; k < sizeof(a); k++)a[k]=yytext[k];
-                arg[i] = yytext;
-                i++; 
-                BEGIN(F);
-            }
-
-<D>[^\n]+" "   {
-                printf("%sawwad\n",yytext);
-                char a[strlen(yytext) - 1];
-                for(int k = 0 ; k < sizeof(a); k++)a[k]=yytext[k];
-                arg[i] = a;
-                printf("arg:%s",arg[i]);
-                i++;
+<D>[^ \t\n]+  {
+                printf("Leu %s\n",yytext);
+                strcpy(arg1,yytext);
+                printf("arg1:%s",arg1);
                 BEGIN(E);
             }
 
+<E>" "      {   }
 
-<F>\n       {
-                arg[0] = cmd;
-                printf("%s\n", arg[0]);
-                printf("%s\n", arg[1]);
-                printf("%s\n", arg[2]);
-                
-                arg[i] = NULL;
-                int p = fork();
-                if(p == 0)
+<E>[^ \t\n]+  {
+                printf("Leu %s\n",yytext);
+                strcpy(arg2,yytext);
+                printf("arg1:%s",arg1);
+                printf("arg2:%s",arg2);
+
+                int c = fork();
+                if(c == 0)
                 {
-                    showargs(arg);
-                    if(execv(getpath(cmd), arg) == -1)perror("Erro");
+                    if(execl(getpath(cmd), cmd, arg1, arg2, (char *) NULL) == -1)perror("Erro");
                 }
                 else
                 {
                    wait(NULL);
                    BEGIN(INITIAL);
-                }  
+                } 
             }
 
 %%
