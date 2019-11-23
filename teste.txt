@@ -1,0 +1,25 @@
+lwladwd5
+1
+6
+122
+345
+987
+456
+873
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char *argv[])
+{ 
+	int p;
+    p = fork();
+    if(p)
+    {   
+        
+        char *args[] = { "acrescenta", "./teste.txt", "./teste.c", NULL };
+        execv( "./acrescenta", args );
+	    perror("Erro na execução?\n");
+    }
+	exit(EXIT_FAILURE);
+}
