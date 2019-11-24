@@ -58,6 +58,7 @@ conta       {
                 if(p == 0)
                 {
                     if(execl(getpath(cmd), cmd, yytext, (char *) NULL) == -1)perror("Erro");
+                    else printf("Terminou com sucesso\n");
                 }
                 else
                 {
@@ -70,27 +71,23 @@ conta       {
 
 terminar       { return 0;}
 
-<C>[ ]          {  puts("First space");BEGIN(D);}
+<C>[ ]          {  BEGIN(D);}
 
 <D>[^ \t\n]+  {
-                printf("Leu %s\n",yytext);
+                
                 strcpy(arg1,yytext);
-                printf("arg1:%s",arg1);
                 BEGIN(E);
             }
 
 <E>" "      {   }
 
 <E>[^ \t\n]+  {
-                printf("Leu %s\n",yytext);
                 strcpy(arg2,yytext);
-                printf("arg1:%s",arg1);
-                printf("arg2:%s",arg2);
-
                 int c = fork();
                 if(c == 0)
                 {
                     if(execl(getpath(cmd), cmd, arg1, arg2, (char *) NULL) == -1)perror("Erro");
+                    else printf("Terminou com sucesso\n");
                 }
                 else
                 {
