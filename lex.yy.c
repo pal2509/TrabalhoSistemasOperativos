@@ -834,15 +834,17 @@ YY_RULE_SETUP
 case 8:
 YY_RULE_SETUP
 #line 56 "interpretador.l"
-{    
+{   int cod;
                 int p = fork();
                 if(p == 0)
-                {
-                    if(execl(getpath(cmd), cmd, yytext, (char *) NULL) == -1)perror("Erro");
+                {   
+
+                    cod = execl(getpath(cmd), cmd, yytext, (char *) NULL);
                 }
                 else
                 {
                     wait(NULL);
+                    printf("\nTerminou comando %s com codigo %d\n",cmd,cod);
                     BEGIN(INITIAL);
 
                 } 
@@ -851,61 +853,58 @@ YY_RULE_SETUP
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 69 "interpretador.l"
+#line 71 "interpretador.l"
 {  printf("%c ", c); BEGIN(INITIAL);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 71 "interpretador.l"
+#line 73 "interpretador.l"
 { return 0;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 73 "interpretador.l"
-{  puts("First space");BEGIN(D);}
+#line 75 "interpretador.l"
+{  BEGIN(D);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 75 "interpretador.l"
+#line 77 "interpretador.l"
 {
-                printf("Leu %s\n",yytext);
+                
                 strcpy(arg1,yytext);
-                printf("arg1:%s",arg1);
                 BEGIN(E);
             }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 82 "interpretador.l"
+#line 83 "interpretador.l"
 {   }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 84 "interpretador.l"
-{
-                printf("Leu %s\n",yytext);
+#line 85 "interpretador.l"
+{ 
+                int cod;
                 strcpy(arg2,yytext);
-                printf("arg1:%s",arg1);
-                printf("arg2:%s",arg2);
-
-                int p = fork();
-                if(p == 0)
+                int c = fork();
+                if(c == 0)
                 {
-                    if(execl(getpath(cmd), cmd, arg1, arg2, (char *)NULL) == -1)perror("Erro");
+                    cod = execl(getpath(cmd), cmd, arg1, arg2, (char *) NULL);
                 }
                 else
                 {
-                   wait(NULL);
-                   BEGIN(INITIAL);
+                    wait(NULL);
+                    printf("\nTerminou comando %s com codigo %d\n",cmd,cod);
+                    BEGIN(INITIAL);
                 } 
             }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 103 "interpretador.l"
+#line 101 "interpretador.l"
 ECHO;
 	YY_BREAK
-#line 909 "lex.yy.c"
+#line 908 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(A):
 case YY_STATE_EOF(B):
@@ -1916,6 +1915,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 103 "interpretador.l"
+#line 101 "interpretador.l"
 
 

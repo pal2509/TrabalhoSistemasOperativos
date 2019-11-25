@@ -53,16 +53,17 @@ conta       {
 <A>[ ]      {BEGIN(B);}
 
 
-<B>[^ \n]+  {    
+<B>[^ \n]+  {   int cod;
                 int p = fork();
                 if(p == 0)
-                {
-                    if(execl(getpath(cmd), cmd, yytext, (char *) NULL) == -1)perror("Erro");
-                    else printf("Terminou com sucesso\n");
+                {   
+
+                    cod = execl(getpath(cmd), cmd, yytext, (char *) NULL);
                 }
                 else
                 {
                     wait(NULL);
+                    printf("\nTerminou comando %s com codigo %d\n",cmd,cod);
                     BEGIN(INITIAL);
 
                 } 
@@ -81,18 +82,19 @@ terminar       { return 0;}
 
 <E>" "      {   }
 
-<E>[^ \t\n]+  {
+<E>[^ \t\n]+  { 
+                int cod;
                 strcpy(arg2,yytext);
                 int c = fork();
                 if(c == 0)
                 {
-                    if(execl(getpath(cmd), cmd, arg1, arg2, (char *) NULL) == -1)perror("Erro");
-                    else printf("Terminou com sucesso\n");
+                    cod = execl(getpath(cmd), cmd, arg1, arg2, (char *) NULL);
                 }
                 else
                 {
-                   wait(NULL);
-                   BEGIN(INITIAL);
+                    wait(NULL);
+                    printf("\nTerminou comando %s com codigo %d\n",cmd,cod);
+                    BEGIN(INITIAL);
                 } 
             }
 
