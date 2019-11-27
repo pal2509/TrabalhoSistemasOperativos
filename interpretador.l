@@ -54,16 +54,16 @@ conta       {
 
 
 <B>[^ \n]+  {   int cod;
-                int p = fork();
-                if(p == 0)
+                int p = fork();  //Criar um novo processo
+                if(p == 0) //Verificar se é o processo filho 
                 {   
 
-                    cod = execl(getpath(cmd), cmd, yytext, (char *) NULL);
+                    cod = execl(getpath(cmd), cmd, yytext, (char *) NULL);  //Executar o progama nesse processo filho
                 }
                 else
                 {
-                    wait(NULL);
-                    printf("\nTerminou comando %s com codigo %d\n",cmd,cod);
+                    wait(NULL); //Wait() para o processo pai esperar
+                    printf("\nTerminou comando %s com codigo %d\n",cmd,cod); //Codigo de fim de execução
                     BEGIN(INITIAL);
 
                 } 
@@ -85,15 +85,15 @@ terminar       { return 0;}
 <E>[^ \t\n]+  { 
                 int cod;
                 strcpy(arg2,yytext);
-                int c = fork();
-                if(c == 0)
+                int c = fork();  //Criar um novo processo
+                if(c == 0) //Verificar se é o processo filho
                 {
-                    cod = execl(getpath(cmd), cmd, arg1, arg2, (char *) NULL);
+                    cod = execl(getpath(cmd), cmd, arg1, arg2, (char *) NULL);  //Executar o progama nesse processo filho
                 }
                 else
                 {
-                    wait(NULL);
-                    printf("\nTerminou comando %s com codigo %d\n",cmd,cod);
+                    wait(NULL);  //Wait() para o processo pai esperar
+                    printf("\nTerminou comando %s com codigo %d\n",cmd,cod);  //Codigo de fim de execução
                     BEGIN(INITIAL);
                 } 
             }
