@@ -35,9 +35,10 @@ int main(int argc, char* argv[])
             printf("Tamanho: %lld bytes\n",(long long)file.st_size);//Tamanho em bytes do ficheiro
             printf("I-node: %ld\n",(long)file.st_ino);//Numero de I-node
             printf("UID: %ld \n",(long)file.st_uid);//User ID do ficheiro
+            
             printf("Criação: \n");
             printf("Última modificação: %s\n",ctime(&file.st_mtime));//Data da ultima modificação
-
+            
         }
         else perror("Erro"); //Mensagem de erro
         close(fd); //Fechar o fiheiro
