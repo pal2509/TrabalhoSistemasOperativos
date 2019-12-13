@@ -2,7 +2,7 @@
     #include <unistd.h>
     char cmd[20];
     char c = '%';
-    char *arg[20];
+    char *arg[200];
     int i = 1;
 
 %x Files
@@ -46,6 +46,8 @@ conta       {
                 BEGIN(Files);
             }
 
+termina     { return 0;}
+
 \n {printf("%c ",c);}
 
 <Files>[^\t \n]+   { arg[i] = strdup(yytext);
@@ -54,14 +56,13 @@ conta       {
 <Files>\n  {       
         arg[i] = NULL;
         int p = fork();
+        int r;
         if(p == 0)
         {
-            execv(cmd, arg);
+            r = execv(cmd, arg);
         }
-        else 
-        {
-            wait();
-        }
+        else    wait(NULL);
+        printf("\nTerminou o comando %s com codigo %d\n", arg[0], r);
         i = 1;
         printf("%c ", c);
         BEGIN(INITIAL);
