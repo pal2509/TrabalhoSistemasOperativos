@@ -835,9 +835,9 @@ YY_RULE_SETUP
         int r;
         if(p == 0)
         {
-            r = execv(cmd, arg);
+            execv(cmd, arg);
         }
-        else    wait(NULL);
+        else    r = wait(NULL);
         printf("\nTerminou o comando %s com codigo %d\n", arg[0], r);
         i = 1;
         printf("%c ", c);
