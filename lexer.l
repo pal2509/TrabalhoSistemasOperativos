@@ -1,5 +1,6 @@
 
     #include <unistd.h>
+    #include <sys/wait.h>
     char cmd[20];
     char c = '%';
     char *arg[200];
